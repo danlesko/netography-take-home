@@ -1,25 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import { useSelector } from 'react-redux'
+import {useEffect, useState} from "react";
+import {Col, Container, Nav, Row} from "react-bootstrap";
 
 function App() {
+
+  const launches = useSelector(state => state.launches)
+
+  const [localLaunches, setLocalLaunches] = useState([])
+  const [yearArr, setYearArr] = useState([])
+
+  useEffect(()=>{
+    setLocalLaunches(launches)
+    setYearArr([...new Set(launches.map(item => item.launch_year))])
+  },[launches])
+
+  useEffect(()=>{
+    console.log(yearArr)
+  },[yearArr])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <Container>
+        <Nav activeKey="/home" >
+          <Nav.Item>
+            <Nav.Link><h2>SpaceX Launch Data</h2></Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </Container>
+  )
 }
 
-export default App;
+export default App
