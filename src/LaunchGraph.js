@@ -16,7 +16,7 @@ const LaunchGraph = (props) => {
     yAxis: {
       min: 0,
       title: {
-        text: 'Total fruit consumption'
+        text: 'Total launches'
       },
       stackLabels: {
         enabled: true,
