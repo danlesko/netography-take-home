@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import { Container, Form, Nav, Spinner} from "react-bootstrap";
 import LaunchGraph from "./LaunchGraph";
 import "./App.css"
+import LaunchPie from "./LaunchPie";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
   const [yearArr, setYearArr] = useState([])
   const [shipNameArr, setShipNameArr] = useState([])
   const [dataSeries, setDataSeries] = useState([])
+  const [pieDataSeries, setPieDataSeries] = useState([])
   const [filterShip, setFilterShip] = useState("all")
   const [successFailAll, setSuccessFailAll] = useState("all")
 
@@ -27,12 +29,17 @@ function App() {
   // Format data to be sent to the HighCharts api
   useEffect(()=>{
     let series = []
+    let pieSeries = []
 
     if(filterShip === "all") {
       for (let i = 0; i < shipNameArr.length; i++) {
         let entry = {
           'name': shipNameArr[i],
           'data': []
+        }
+        let pieEntry = {
+          'name': shipNameArr[i],
+          'y': 0
         }
         for (let j = 0; j < yearArr.length; j++) {
           if (successFailAll === "all") {
@@ -46,8 +53,12 @@ function App() {
             entry.data.push(filteredArr.length)
           }
         }
+        pieEntry.y = entry.data.reduce((a,b) => a + b, 0)
+        pieSeries.push(pieEntry)
         series.push(entry)
       }
+
+      setPieDataSeries(pieSeries)
       setDataSeries(series)
     } else {
       let entrySuccess = {
@@ -58,15 +69,29 @@ function App() {
         'name': 'failure',
         'data': []
       }
+      let pieSuccess = {
+        'name': 'success',
+        'y': 0
+      }
+      let pieFailure = {
+        'name': 'failure',
+        'y': 0
+      }
       for (let j = 0; j < yearArr.length; j++) {
         let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === filterShip && item.launch_year === yearArr[j]  && item.launch_success === true)
         entrySuccess.data.push(filteredArr.length)
         let filteredArr2 = localLaunches.filter(item => item.rocket.rocket_id === filterShip && item.launch_year === yearArr[j]  && item.launch_success === false)
         entryFailure.data.push(filteredArr2.length)
       }
-      series.push(entryFailure)
       series.push(entrySuccess)
+      series.push(entryFailure)
       setDataSeries(series)
+
+      pieSuccess.y = entrySuccess.data.reduce((a,b) => a + b, 0)
+      pieFailure.y = entryFailure.data.reduce((a,b) => a + b, 0)
+      pieSeries.push(pieSuccess)
+      pieSeries.push(pieFailure)
+      setPieDataSeries(pieSeries)
     }
 
   },[shipNameArr, localLaunches, filterShip, successFailAll, yearArr])
@@ -102,6 +127,7 @@ function App() {
         ) : (
             <>
               <LaunchGraph bucket={yearArr} series={dataSeries} shipName={filterShip}/>
+              <br />
               <Form>
                 <Form.Group className="md-3">
                   <div className={'col-md-3'}>
@@ -147,6 +173,7 @@ function App() {
                       </>
                   )
                   }
+                  <LaunchPie  series={pieDataSeries} shipName={filterShip}/>
                 </Form.Group>
               </Form>
             </>
