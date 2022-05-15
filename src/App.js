@@ -1,8 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
 import { useSelector } from 'react-redux'
 import {useEffect, useState} from "react";
-import {Col, Container, Form, Nav, Row, Spinner} from "react-bootstrap";
+import { Container, Form, Nav, Spinner} from "react-bootstrap";
 import LaunchGraph from "./LaunchGraph";
 
 function App() {
@@ -29,38 +27,48 @@ function App() {
   useEffect(()=>{
     let series = []
 
-    for(let i = 0; i < shipNameArr.length; i++){
-      let entry = {
-        'name': shipNameArr[i],
-        'data': []
-      }
-      for (let j = 0; j < yearArr.length; j++){
-        if (successFailAll === "all") {
-          let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === shipNameArr[i] && item.launch_year === yearArr[j])
-          entry.data.push(filteredArr.length)
-        } else if (successFailAll === "success") {
-          let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === shipNameArr[i] && item.launch_year === yearArr[j] && item.launch_success === true)
-          entry.data.push(filteredArr.length)
-        } else if (successFailAll === "failure") {
-          let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === shipNameArr[i] && item.launch_year === yearArr[j] && item.launch_success === false)
-          entry.data.push(filteredArr.length)
+    if(filterShip === "all") {
+      for (let i = 0; i < shipNameArr.length; i++) {
+        let entry = {
+          'name': shipNameArr[i],
+          'data': []
         }
+        for (let j = 0; j < yearArr.length; j++) {
+          if (successFailAll === "all") {
+            let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === shipNameArr[i] && item.launch_year === yearArr[j])
+            entry.data.push(filteredArr.length)
+          } else if (successFailAll === "success") {
+            let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === shipNameArr[i] && item.launch_year === yearArr[j] && item.launch_success === true)
+            entry.data.push(filteredArr.length)
+          } else if (successFailAll === "failure") {
+            let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === shipNameArr[i] && item.launch_year === yearArr[j] && item.launch_success === false)
+            entry.data.push(filteredArr.length)
+          }
+        }
+        series.push(entry)
       }
-      series.push(entry)
-    }
-
-    if(filterShip === "all"){
       setDataSeries(series)
     } else {
-      series = series.filter(entry => entry.name === filterShip)
+      let entrySuccess = {
+        'name': 'success',
+        'data': []
+      }
+      let entryFailure = {
+        'name': 'failure',
+        'data': []
+      }
+      for (let j = 0; j < yearArr.length; j++) {
+        let filteredArr = localLaunches.filter(item => item.rocket.rocket_id === filterShip && item.launch_year === yearArr[j]  && item.launch_success === true)
+        entrySuccess.data.push(filteredArr.length)
+        let filteredArr2 = localLaunches.filter(item => item.rocket.rocket_id === filterShip && item.launch_year === yearArr[j]  && item.launch_success === false)
+        entryFailure.data.push(filteredArr2.length)
+      }
+      series.push(entryFailure)
+      series.push(entrySuccess)
       setDataSeries(series)
     }
-  },[shipNameArr, localLaunches, filterShip, successFailAll])
 
-  useEffect(()=>{
-    // console.log(yearArr)
-    // console.log(shipNameArr)
-  },[yearArr])
+  },[shipNameArr, localLaunches, filterShip, successFailAll, yearArr])
 
   const handleChange = (e) => {
     let shipName = e.target.value
@@ -97,7 +105,7 @@ function App() {
             </div>
         ) : (
             <>
-              <LaunchGraph bucket={yearArr} series={dataSeries}/>
+              <LaunchGraph bucket={yearArr} series={dataSeries} shipName={filterShip}/>
               <Form>
                 <Form.Group className="md-3">
                   <div className={'col-md-3'}>
@@ -147,7 +155,6 @@ function App() {
               </Form>
             </>
         )}
-
       </Container>
   )
 }

@@ -8,7 +8,7 @@ const LaunchGraph = (props) => {
       type: 'column'
     },
     title: {
-      text: 'SpaceX Launches'
+      text: props.shipName === "all" ? "SecureX Launches" : "SecureX Launches : " + props.shipName
     },
     xAxis: {
       categories: [...props.bucket]
