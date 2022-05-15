@@ -32,7 +32,7 @@ const LaunchPie = (props) => {
       }
     },
     series: [{
-      name: 'Brands',
+      name: 'Launches',
       colorByPoint: true,
       data: [...props.series]
 
