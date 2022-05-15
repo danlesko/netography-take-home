@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/netography-take-home/static/css/main.08885c06.css",
-    "main.js": "/netography-take-home/static/js/main.3c59454b.js",
+    "main.js": "/netography-take-home/static/js/main.79f0ae57.js",
     "index.html": "/netography-take-home/index.html",
     "main.08885c06.css.map": "/netography-take-home/static/css/main.08885c06.css.map",
-    "main.3c59454b.js.map": "/netography-take-home/static/js/main.3c59454b.js.map"
+    "main.79f0ae57.js.map": "/netography-take-home/static/js/main.79f0ae57.js.map"
   },
   "entrypoints": [
     "static/css/main.08885c06.css",
-    "static/js/main.3c59454b.js"
+    "static/js/main.79f0ae57.js"
   ]
 }
