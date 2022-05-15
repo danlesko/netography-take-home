@@ -8,7 +8,7 @@ import { fetchLaunches } from './redux/actions'
 import {Provider} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.css';
 
-//Dispatch the fetchPosts() before our root component renders
+//Dispatch the fetchLaunches() before our root component renders
 store.dispatch(fetchLaunches())
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

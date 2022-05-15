@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux'
 import {useEffect, useState} from "react";
 import { Container, Form, Nav, Spinner} from "react-bootstrap";
 import LaunchGraph from "./LaunchGraph";
+import "./App.css"
 
 function App() {
 
@@ -89,12 +90,7 @@ function App() {
           </Nav.Item>
         </Nav>
         {localLaunches.length === 0 ? (
-            <div style={{
-              "margin": "auto",
-              textAlign: "center",
-              width: "50%",
-              padding: "10px"
-            }}>
+            <div className={"spinners"}>
               <Spinner animation="grow" variant="primary" />
               <Spinner animation="grow" variant="secondary" />
               <Spinner animation="grow" variant="success" />

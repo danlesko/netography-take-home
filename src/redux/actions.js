@@ -13,7 +13,7 @@ export const fetchLaunches =  () => {
   return async dispatch => {
     try {
       let launches = await axios.get('https://api.spacexdata.com/v3/launches/past')
-      dispatch(fetchLaunchesSuccess(launches.data)) //store first five posts
+      dispatch(fetchLaunchesSuccess(launches.data))
     }
     catch(e){
       console.log(e)
