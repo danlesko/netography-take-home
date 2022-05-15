@@ -2,7 +2,7 @@
   "name": "netography-take-home",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://danlesko.github.io",
+  "homepage": "https://danlesko.github.io/netography-take-home",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
